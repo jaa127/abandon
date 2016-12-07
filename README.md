@@ -103,7 +103,7 @@ If you need to use abandon as a library, you can use the following maven depende
 ```
 <dependency>
   <groupId>in.co.uproot</groupId>
-  <artifactId>abandon-base_2.11</artifactId>
+  <artifactId>abandon-base_2.12</artifactId>
   <version>0.3.2</version>
 </dependency>
 ```

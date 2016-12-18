@@ -1,21 +1,9 @@
-excludedJars in assembly <<= (fullClasspath in assembly) map { cp =>
-  cp filter {
-    _.data.getName == "jfxrt.jar"
-  }
-}
-
-// proguardSettings
-
-// ProguardKeys.options in Proguard ++= Seq("-dontwarn", "-ignorewarnings", "-verbose", "-dontoptimize", "-dontobfuscate")
-
-// ProguardKeys.options in Proguard += ProguardOptions.keepMain("co.uproot.abandon.AbandonApp")
-
 lazy val commonSettings = Seq(
   // don't define "name" here, because it will cause
   // circular dependencies with sub-projects
 
-  organization := "in.co.uproot",
-  version := "0.3.2",
+  organization := "fi.sn127",
+  version := "1.0.0",
   scalaVersion := "2.12.1",
   // see scala -opt:help for full list of optimizations with scala 2.12
   scalacOptions := List("-deprecation", "-opt:l:default"),
@@ -31,12 +19,12 @@ lazy val commonSettings = Seq(
 
 )
 
-lazy val abandon = (project in file(".")).
-  aggregate(base, cli, gui).
-  dependsOn(base, cli, gui).
+lazy val tack = (project in file(".")).
+  aggregate(base, cli).
+  dependsOn(base, cli).
   settings(commonSettings: _*).
   settings(
-    name := "abandon",
+    name := "tack",
     fork in run := true
   )
 
@@ -44,8 +32,9 @@ lazy val base = (project in file("base")).
   settings(commonSettings: _*).
   enablePlugins(BuildInfoPlugin).
   settings(
-    name := "abandon-base",
+    name := "tack-base",
     fork in run := true,
+    test in assembly := {},
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
     buildInfoPackage := "co.uproot.abandon"
   )
@@ -55,17 +44,9 @@ lazy val cli = (project in file("cli")).
   dependsOn(base).
   settings(commonSettings: _*).
   settings(
-    name := "abandon-cli",
-    fork in run := true
+    name := "tack-cli",
+    fork in run := true,
+    assemblyJarName in assembly := "tack-cli" + "-" + version.value + ".jar",
+    test in assembly := {}
   )
-
-lazy val gui = (project in file("gui")).
-  dependsOn(base).
-  settings(commonSettings: _*).
-  settings(
-    name := "abandon-gui",
-    fork in run := true
-  )
-
-
 
